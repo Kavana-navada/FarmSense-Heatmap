@@ -1,0 +1,117 @@
+.heroContainer {
+
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #eef4ff, #ddecff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navbar {
+  width: 100%;
+  /* display: flex;
+  justify-content: space-between; */
+  align-items: center;
+  padding: 20px 20px;
+  background-color: white;
+  margin-bottom: 5rem;
+  position: fixed;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #0057d8;
+  margin-left: 1rem;
+}
+
+
+.heroContent {
+  max-width: 800px;
+  text-align: center;
+  margin-top: 10rem;
+padding: 20px;
+}
+
+
+.heroContent h1 {
+  font-size: 2.8rem;
+  margin: 0;
+  
+  
+}
+
+.highlight {
+  color: #007bff;
+  font-size: 2rem;
+}
+
+.heroContent p {
+  font-size: 1rem;
+  color: #555;
+  margin: 50px 0;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.primary,
+.secondary {
+  padding: 10px 20px;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: white;
+  color:black
+  
+}
+
+.primary:hover,
+.secondary:hover {
+  background-color:#007bff;
+  color: rgb(252, 250, 250);
+  border-color: white;
+}
+
+
+.scroll {
+  padding-top: 3rem ;
+  font-size: 0.9rem;
+  color: #666;
+ 
+}
+
+@media (max-width: 600px) {
+    .heroContent{
+    padding: 11px;
+    margin-top: 8rem;
+    }
+  .heroContent h1 {
+    font-size: 1.9rem;
+  
+    
+  }
+  .highlight{
+    font-size: 1.5rem;
+  }
+  .heroContent p{
+    font-size: 0.8rem;
+  }
+  .primary,
+    .secondary {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        width: 90%;
+        margin: 0 auto;
+    }
+    .scroll {
+  padding-top: 0rem ;
+    }
+  .buttonGroup {
+    flex-direction: column;
+  }
+}

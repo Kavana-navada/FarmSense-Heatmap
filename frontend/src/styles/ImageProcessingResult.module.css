@@ -1,0 +1,90 @@
+.resultContainer {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #5e6a78;
+  margin-bottom: 30px;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+.leftPanel {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.rightPanel {
+  flex: 1;
+  min-width: 260px;
+  max-width: 350px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.resultImage {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.imageLabel {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.rightPanel p {
+  margin: 10px 0;
+  font-size: 0.95rem;
+}
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.downloadBtn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.resetBtn {
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.resetBtn:hover {
+  background-color: #ddd;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    flex-direction: column;
+    align-items: center;
+  }
+}
