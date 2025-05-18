@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import styles from '../styles/ImgVideoUploadSection.module.css';
 import { FaPlayCircle, FaTimesCircle, FaCloudUploadAlt } from 'react-icons/fa';
 
-const VideoUploadSection = () => {
+const VideoUploadSection = ({onSubmit}) => {
   const [videoFile, setVideoFile] = useState(null);
   const [dragOver, setDragOver] = useState(false);
 
   const handleFileChange = (e) => {
-    setVideoFile(e.target.files[0]);
+    const file = e.target.files[0];
+    if (isValidVideo(file)) {
+      setVideoFile(file);
+    } else {
+      alert('Please upload a valid video file (MP4, MOV, AVI, WEBM).');
+    }
   };
 
   const handleDragOver = (e) => {
@@ -18,14 +23,37 @@ const VideoUploadSection = () => {
   const handleDrop = (e) => {
     e.preventDefault();
     setDragOver(false);
-    if (e.dataTransfer.files[0]) {
-      setVideoFile(e.dataTransfer.files[0]);
+    const file = e.dataTransfer.files[0];
+    if (isValidVideo(file)) {
+      setVideoFile(file);
+    } else {
+      alert('Only video files are allowed.');
     }
   };
 
   const removeFile = () => setVideoFile(null);
 
   const formatSize = (size) => (size / 1024 / 1024).toFixed(2) + ' MB';
+
+  const isValidVideo = (file) => {
+    const acceptedTypes = ['video/mp4', 'video/mov', 'video/avi', 'video/webm'];
+    return file && acceptedTypes.includes(file.type);
+  };
+
+  const handleAnalyze = () => {
+    console.log("3")
+    if (videoFile) {
+      console.log("4")
+      console.log(videoFile)
+    }
+    if(onSubmit){
+      console.log("5")
+      console.log(onSubmit)
+    }
+    if (videoFile && onSubmit) { 
+      onSubmit(videoFile);
+    }
+  }
 
   return (
     <section className={styles.uploadSection}>
@@ -70,7 +98,7 @@ const VideoUploadSection = () => {
               
             </div>
             
-            <button className={styles.generateButton}>Analyze Video</button>
+            <button className={styles.generateButton} onClick={handleAnalyze} disabled={!isValidVideo(videoFile)}>Analyze Video</button>
           </div>
         )}
       </div>

@@ -4,6 +4,8 @@ import styles from "../styles/HomePage.module.css";
 import ImageUploadSection from './ImageUploadSection';
 import VideoUploadSection from './VideoUploadSection';
 import ImageUploadFlow from './ImageUploadFlow';
+import {FaAngleDown} from 'react-icons/fa';
+import VideoUploadFlow from './VideoUploadFlow';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -13,9 +15,9 @@ const HomePage = () => {
       imageUploadSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
-  const goToImageUpload = () => {
-  navigate('/upload-image');
-};
+//   const goToImageUpload = () => {
+//   navigate('/upload-image');
+// };
 
   const scrollToVideoUpload = () => {
     const videoUploadSection = document.getElementById('video-upload-section');
@@ -44,11 +46,12 @@ const HomePage = () => {
           <button className={styles.secondary} onClick={scrollToVideoUpload}>Upload Video</button>
         </div>
 
-        <p className={styles.scroll}>Scroll to begin ↓</p>
+        <p className={styles.scroll}>Scroll to begin <br /><button onClick={scrollToVideoUpload} className={styles.downArrow}><FaAngleDown size={20}/></button></p>
+        
       </div>
     </header>
     <div id="video-upload-section">
-    <VideoUploadSection/>
+    <VideoUploadFlow/>
 </div>
    <div id="image-upload-section" className={styles.imageUploadSection}>
   <ImageUploadFlow />

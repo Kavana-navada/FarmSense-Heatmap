@@ -85,6 +85,15 @@ padding: 20px;
   border-color: white;
 }
 
+.downArrow{
+ 
+  font-size: 2rem;
+  color: #007bff;
+  animation: bounce 1s infinite;
+  background-color: transparent;
+  border: none;
+}
+
 
 .scroll {
   padding-top: 3rem ;

@@ -10,6 +10,8 @@ import numpy as np
 from scipy.ndimage import gaussian_filter
 import matplotlib.pyplot as plt
 import uuid
+from PIL import Image, ImageDraw, ImageFont
+from collections import Counter
 
 
 
@@ -67,6 +69,94 @@ def serve_output_image(filename):
     filepath = os.path.join(OUTPUT_FOLDER, filename)
     return send_file(filepath, as_attachment=True,download_name='analyzed_image.jpg')
 
+@app.route('/outputs/<path:filename>')
+def serve_output_file(filename):
+    return send_from_directory(OUTPUT_FOLDER, filename, as_attachment=True, download_name='analyzed_video.mp4')
+
+@app.route('/analyze-video', methods=['POST'])
+def analyze_video():
+    video_file = request.files['video']
+    filename = f"{uuid.uuid4().hex}.mp4"
+    input_path = os.path.join(UPLOAD_FOLDER, filename)
+    output_filename = f"{uuid.uuid4().hex}_annotated.mp4"
+    output_path = os.path.join(OUTPUT_FOLDER, output_filename)
+
+    video_file.save(input_path)
+
+    cap = cv2.VideoCapture(input_path)
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    out = cv2.VideoWriter(output_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (width, height))
+
+    healthy_count, unhealthy_count = 0, 0
+    chicken_positions = []
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        results = model(frame)[0]
+        for box in results.boxes:
+            x1, y1, x2, y2 = map(int, box.xyxy[0])
+            cx = int((x1 + x2) / 2)
+            cy = int((y1 + y2) / 2)
+            chicken_positions.append((cx, cy))
+
+            conf = float(box.conf[0])
+            cls = int(box.cls[0])
+            label = 'Healthy' if cls == 0 else 'Unhealthy'
+
+            if cls == 0:
+                healthy_count += 1
+                color = (0, 255, 0)
+            else:
+                unhealthy_count += 1
+                color = (0, 0, 255)
+
+            cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+            cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+
+        out.write(frame)
+
+    cap.release()
+    out.release()
+
+    # Save for heatmap use
+    np.save(os.path.join(OUTPUT_FOLDER, "chicken_positions.npy"), chicken_positions)
+
+    return jsonify({
+        'healthy_count': healthy_count,
+        'unhealthy_count': unhealthy_count,
+        'hotspots': len(chicken_positions),
+        'annotated_video': f"{OUTPUT_FOLDER}/{output_filename}"
+    })
+
+
+@app.route('/generate-heatmap', methods=['GET'])
+def generate_heatmap():
+    try:
+        positions = np.load(os.path.join(OUTPUT_FOLDER, "chicken_positions.npy"))
+        if len(positions) == 0:
+            raise ValueError("No chicken positions available.")
+
+        heatmap = np.zeros((720, 1280), dtype=np.float32)
+        for x, y in positions:
+            if 0 <= x < 1280 and 0 <= y < 720:
+                heatmap[int(y), int(x)] += 1
+
+        heatmap_blurred = gaussian_filter(heatmap, sigma=25)
+        normalized = cv2.normalize(heatmap_blurred, None, 0, 255, cv2.NORM_MINMAX)
+        heatmap_colored = cv2.applyColorMap(normalized.astype(np.uint8), cv2.COLORMAP_JET)
+
+        heatmap_filename = f"{uuid.uuid4().hex}_heatmap.jpg"
+        heatmap_path = os.path.join(OUTPUT_FOLDER, heatmap_filename)
+        cv2.imwrite(heatmap_path, heatmap_colored)
+
+        return jsonify({'heatmap_path': f"{OUTPUT_FOLDER}/{heatmap_filename}"})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 # @app.route('/upload-image', methods=['POST'])

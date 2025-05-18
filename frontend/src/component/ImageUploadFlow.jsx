@@ -12,12 +12,7 @@ const ImageUploadFlow = () => {
   const [progress, setProgress] = useState(0);
   const [completedSteps, setCompletedSteps] = useState([]);
 
-  const steps = [
-    'Reading Image',
-    'Detecting Chickens',
-    'Classifying Health',
-    'Annotating Output'
-  ];
+ 
 
   const handleSubmit = async (imageFile) => {
   setStep('processing');
