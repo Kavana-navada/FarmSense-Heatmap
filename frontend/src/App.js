@@ -5,15 +5,19 @@ import VideoUploadSection from './component/VideoUploadSection';
 import ImageUploadSection from './component/ImageUploadSection';
 import ImageProcessingScreen from './component/ImageProcessingScreen';
 import ImageProcessingResult from './component/ImageProcessingResult';
+import ImageUploadFlow from './component/ImageUploadFlow';
+
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/upload-video" element={<VideoUploadSection />} />
-        <Route path="/upload-image" element={<ImageUploadSection />} />
+        <Route path="/upload-image/*" element={<ImageUploadFlow />} />
         <Route path="/process-image" element={<ImageProcessingScreen />} />
         <Route path="/image-result" element={<ImageProcessingResult />} />
+       
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

@@ -20,6 +20,7 @@ const ImageAnalysisResult = ({ imageUrl, healthyCount, unhealthyCount, onReset }
 
           <div className={styles.buttons}>
             <a href={imageUrl} download className={styles.downloadBtn}>Download Output</a>
+            
             <button onClick={onReset} className={styles.resetBtn}>Analyze Another Image</button>
           </div>
         </div>

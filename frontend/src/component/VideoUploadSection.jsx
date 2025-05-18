@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../styles/VideoUploadSection.module.css';
+import styles from '../styles/ImgVideoUploadSection.module.css';
 import { FaPlayCircle, FaTimesCircle, FaCloudUploadAlt } from 'react-icons/fa';
 
 const VideoUploadSection = () => {

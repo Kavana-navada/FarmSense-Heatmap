@@ -2,12 +2,13 @@
   padding: 60px 20px;
   text-align: center;
   background-color: #ffffff;
+  min-height: 75vh;
 }
 
 .subtitle {
   font-size: 1rem;
   color: #5e6a78;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 }
 
 .grid {
@@ -15,12 +16,15 @@
   flex-wrap: wrap;
   gap: 30px;
   justify-content: center;
+ 
 }
 
 .leftPanel {
   flex: 1;
   min-width: 300px;
   max-width: 500px;
+  margin-left: 0px;
+  
 }
 
 .rightPanel {
@@ -31,7 +35,8 @@
   border-radius: 12px;
   padding: 20px;
   text-align: left;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
 }
 
 .resultImage {
@@ -51,11 +56,16 @@
   font-size: 0.95rem;
 }
 
+.rightPanel h3{
+  text-decoration: underline;
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
 .buttons {
-  margin-top: 20px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
 }
 
 .downloadBtn {
@@ -67,6 +77,9 @@
   font-weight: 600;
   text-align: center;
 }
+.downloadBtn:hover {
+  background-color: #0056b3;
+}
 
 .resetBtn {
   padding: 10px 20px;
@@ -75,16 +88,47 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .resetBtn:hover {
   background-color: #ddd;
 }
-
 @media (max-width: 768px) {
+  .leftPanel {
+
+  min-width: 400px;
+  max-width: 450px;
+  margin-left: 0px;
+  
+}
+
+.rightPanel {
+
+  min-width: 200px;
+  max-width: 250px;
+}
+}
+
+@media (max-width: 700px) {
   .grid {
     flex-direction: column;
     align-items: center;
   }
+  
+.leftPanel {
+
+  min-width: 300px;
+  max-width: 400px;
+  margin-left: 0px;
+  
+}
+
+.rightPanel {
+
+  min-width: 260px;
+  max-width: 350px;
+}
+  
 }

@@ -1,6 +1,6 @@
 // Updated ImageUploadSection.jsx to trigger processing screen
 import React, { useState } from 'react';
-import styles from '../styles/VideoUploadSection.module.css';
+import styles from '../styles/ImgVideoUploadSection.module.css';
 import { FaImage, FaTimesCircle, FaCloudUploadAlt } from 'react-icons/fa';
 
 const ImageUploadSection = ({ onSubmit }) => {

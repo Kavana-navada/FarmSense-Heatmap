@@ -2,12 +2,13 @@
   padding: 60px 20px;
   text-align: center;
   background-color: #f8faff;
+  min-height: 75vh;
 }
 .ImguploadSection{
      padding: 60px 20px;
     text-align: center;
     background-color: #eef4ff;
-
+    height: 80vh;
 }
 
 .uploadSection h2, .ImguploadSection h2 {
@@ -28,9 +29,9 @@
   border-radius: 16px;
   padding: 40px;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 60px auto;
   background-color: #ffffff;
-  margin-bottom: 50px;
+  /* margin-top: 70px; */
 }
 
 .uploadIcon {
