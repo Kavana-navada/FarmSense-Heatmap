@@ -10,7 +10,7 @@ const VideoProcessingScreen = ({ progress, completedSteps }) => {
     'Classifying Health',
     'Tracking Movement',
     'Preparing Results'
-  ];
+  ]; 
 
   return (
     <div className={styles.container}>
@@ -46,6 +46,9 @@ const VideoProcessingScreen = ({ progress, completedSteps }) => {
 
       <p className={styles.processingMsg}>
        Analyzing video frames and extracting chicken health and activity data...
+      </p>
+      <p className={styles.processingMsg}>
+        Please Wait..
       </p>
     </div>
   );

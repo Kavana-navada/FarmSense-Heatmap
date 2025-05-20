@@ -13,7 +13,7 @@ import uuid
 from PIL import Image, ImageDraw, ImageFont
 from collections import Counter
 
-
+import mimetypes
 
 
 app = Flask(__name__)
@@ -69,32 +69,54 @@ def serve_output_image(filename):
     filepath = os.path.join(OUTPUT_FOLDER, filename)
     return send_file(filepath, as_attachment=True,download_name='analyzed_image.jpg')
 
-@app.route('/outputs/<path:filename>')
+# @app.route('/outputs/<path:filename>')
+# def serve_output_file(filename):
+#     return send_from_directory(OUTPUT_FOLDER, filename, as_attachment=True, download_name='analyzed_video.mp4')
+
+
+
+@app.route('/videooutputs/<path:filename>')
 def serve_output_file(filename):
-    return send_from_directory(OUTPUT_FOLDER, filename, as_attachment=True, download_name='analyzed_video.mp4')
+    filepath = os.path.join(OUTPUT_FOLDER, filename)
+    if not os.path.exists(filepath):
+        return "File not found", 404
+    mime_type, _ = mimetypes.guess_type(filepath)
+    return send_file(filepath, mimetype=mime_type)
+
 
 @app.route('/analyze-video', methods=['POST'])
 def analyze_video():
     video_file = request.files['video']
-    filename = f"{uuid.uuid4().hex}.mp4"
+    filename = f"{uuid.uuid4().hex}.avi"
     input_path = os.path.join(UPLOAD_FOLDER, filename)
-    output_filename = f"{uuid.uuid4().hex}_annotated.mp4"
+    output_filename = f"{uuid.uuid4().hex}_annotated.avi"
     output_path = os.path.join(OUTPUT_FOLDER, output_filename)
 
     video_file.save(input_path)
 
     cap = cv2.VideoCapture(input_path)
-    fps = int(cap.get(cv2.CAP_PROP_FPS))
+    fps = cap.get(cv2.CAP_PROP_FPS)
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    out = cv2.VideoWriter(output_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (width, height))
+
+    # fallback fps
+    if fps == 0 or np.isnan(fps):
+        fps = 25.0
+
+    # safer codec and file extension
+    fourcc = cv2.VideoWriter_fourcc('X','V','I','D')
+    out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
+
+    # Optional debug
+    print(f"Saving annotated video: {output_path}")
+    print(f"Resolution: {width}x{height}, FPS: {fps}")
 
     healthy_count, unhealthy_count = 0, 0
     chicken_positions = []
 
     while cap.isOpened():
         ret, frame = cap.read()
-        if not ret:
+        if not ret or frame is None:
             break
 
         results = model(frame)[0]
@@ -130,7 +152,7 @@ def analyze_video():
         'healthy_count': healthy_count,
         'unhealthy_count': unhealthy_count,
         'hotspots': len(chicken_positions),
-        'annotated_video': f"{OUTPUT_FOLDER}/{output_filename}"
+        'annotated_video': output_filename
     })
 
 

@@ -95,6 +95,33 @@
 .resetBtn:hover {
   background-color: #ddd;
 }
+
+.playBtn {
+  padding: 10px 20px;
+  background-color: #34a853;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.playBtn:hover {
+  background-color: #27833c;
+}
+
+.downloadBtn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.downloadBtn:hover {
+  background-color: #0056b3;
+}
+
 @media (max-width: 768px) {
   .leftPanel {
 
@@ -110,6 +137,8 @@
   max-width: 250px;
 }
 }
+
+
 
 @media (max-width: 700px) {
   .grid {

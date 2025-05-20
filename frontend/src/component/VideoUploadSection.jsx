@@ -41,9 +41,9 @@ const VideoUploadSection = ({onSubmit}) => {
   };
 
   const handleAnalyze = () => {
-    console.log("3")
+ 
     if (videoFile) {
-      console.log("4")
+    
       console.log(videoFile)
     }
     if(onSubmit){
@@ -53,7 +53,7 @@ const VideoUploadSection = ({onSubmit}) => {
     if (videoFile && onSubmit) { 
       onSubmit(videoFile);
     }
-  }
+  } 
 
   return (
     <section className={styles.uploadSection}>
