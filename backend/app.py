@@ -135,7 +135,7 @@ def analyze_video():
                 color = (0, 255, 0)
             else:
                 unhealthy_count += 1
-                color = (0, 0, 255)
+                color = (255, 0, 0 )
 
             cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
             cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
@@ -149,9 +149,7 @@ def analyze_video():
     np.save(os.path.join(OUTPUT_FOLDER, "chicken_positions.npy"), chicken_positions)
 
     return jsonify({
-        'healthy_count': healthy_count,
-        'unhealthy_count': unhealthy_count,
-        'hotspots': len(chicken_positions),
+        
         'annotated_video': output_filename
     })
 

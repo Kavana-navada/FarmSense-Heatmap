@@ -1,0 +1,204 @@
+.container {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #f8faff;
+  border-radius: 12px;
+  max-width: 700px;
+  margin: 40px auto;
+  min-height: 60vh;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #d3e3fd;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.progressBarWrapper {
+  margin: 20px auto;
+  max-width: 400px;
+}
+
+.progressBar {
+  width: 100%;
+  background-color: #e0e0e0;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background-color: #007bff;
+  transition: width 0.5s ease;
+}
+
+.progressText {
+  margin-top: 5px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.steps {
+  list-style: none;
+  padding: 0;
+  margin: 30px auto;
+  max-width: 350px;
+  text-align: left;
+}
+
+.steps li {
+  margin: 10px 0;
+  padding-left: 24px;
+  position: relative;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.steps li::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  top: 4px;
+  background-color: white;
+}
+
+.active::before {
+  border-color: #28a745;
+  background-color: #28a745;
+}
+
+.pending::before {
+  border-color: #ccc;
+}
+
+.processingMsg {
+  margin-top: 20px;
+  color: #007bff;
+  font-weight: 500;
+}
+
+/* Result panel and heatmap section */
+.resultPanel {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid #ddd;
+}
+
+.buttonRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.primaryBtn,
+.downloadLink,
+.resetBtn,
+.generateBtn {
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-decoration: none;
+  display: inline-block;
+
+}
+
+.primaryBtn {
+  background-color: #007bff;
+  color: white;
+  width:160px;
+}
+
+.primaryBtn:hover {
+  background-color: #0056b3;
+}
+.generateBtn{
+    background-color: #28a745;
+    color: white;
+    width:200px;
+}
+.downloadLink {
+  
+  background-color: #28a745;
+  color: white;
+  width:160px;
+  
+}
+
+.downloadLink:hover, .generateBtn:hover{
+  background-color: #1e7e34;
+}
+
+
+.resetBtn {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.resetBtn:hover {
+  background-color: #ddd;
+}
+
+/* .resetBtn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.resetBtn:hover {
+  background-color: #c0392b;
+} */
+
+/* Heatmap display */
+.heatmapWrapper {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.heatmapImage {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-bottom: 15px;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .buttonRow {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .steps {
+    font-size: 0.9rem;
+  }
+
+  .progressBarWrapper {
+    max-width: 90%;
+  }
+
+  .heatmapImage {
+    max-width: 90%;
+  }
+}

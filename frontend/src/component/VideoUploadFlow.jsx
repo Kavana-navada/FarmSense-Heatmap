@@ -2,18 +2,16 @@
 import React, { useState } from 'react';
 import VideoUploadSection from './VideoUploadSection';
 import VideoProcessingScreen from './VideoProcessingScreen';
-import VideoProcessingResult from './VideoProcessingResult';
 
 const VideoUploadFlow = () => {
   const [step, setStep] = useState('upload');
   const [videoUrl, setVideoUrl] = useState('');
   const [downloadUrl, setDownloadUrl] = useState('');
-  const [healthyCount, setHealthyCount] = useState(0);
-  const [unhealthyCount, setUnhealthyCount] = useState(0);
-  const [hotspotCount, setHotspotCount] = useState(0);
   const [heatmapImg, setHeatmapImg] = useState('');
   const [progress, setProgress] = useState(0);
   const [completedSteps, setCompletedSteps] = useState([]);
+  const [showButtons, setShowButtons] = useState(false);
+  const [heatmapGenerated, setHeatmapGenerated] = useState(false);
 
   const steps = [
     'Analyzing Video',
@@ -27,6 +25,8 @@ const VideoUploadFlow = () => {
     setStep('processing');
     setProgress(0);
     setCompletedSteps([]);
+    setShowButtons(false);
+    setHeatmapGenerated(false);
 
     const formData = new FormData();
     formData.append('video', videoFile);
@@ -39,9 +39,12 @@ const VideoUploadFlow = () => {
       } else {
         p += 1;
         setProgress(p);
-        if (s < steps.length) {
+        if (p===12||p===36||p===63||p===87) {
+          if (s < steps.length - 1) {
+            //setStep(steps[s + 1]);
           setCompletedSteps((prev) => [...prev, steps[s]]);
           s++;
+          }
         }
       }
     }, 1000);
@@ -52,26 +55,17 @@ const VideoUploadFlow = () => {
         body: formData
       });
       const data = await res.json();
-
-      const finish = () => {
+      setProgress(100);
+      setCompletedSteps(steps);
+      console.log('completed steps:', steps);
+      p=100;
+      
         setDownloadUrl(`http://localhost:5000/videooutputs/${data.annotated_video}`);
         setVideoUrl(`http://localhost:5000/videooutputs/${data.annotated_video}`);
-        setHealthyCount(data.healthy_count);
-        setUnhealthyCount(data.unhealthy_count);
-        setHotspotCount(data.hotspots);
-        setStep('result');
-      };
-
-      if (p >= 99) {
-        finish();
-      } else {
-        const checkReady = setInterval(() => {
-          if (p >= 99) {
-            clearInterval(checkReady);
-            finish();
-          }
-        }, 300);
-      }
+      
+        setShowButtons(true);
+        console.log('completed:');
+      
     } catch (error) {
       console.error('Video processing error:', error);
     }
@@ -82,40 +76,37 @@ const VideoUploadFlow = () => {
       const res = await fetch('http://localhost:5000/generate-heatmap');
       const data = await res.json();
       setHeatmapImg(`http://localhost:5000/${data.heatmap_path}`);
+      setHeatmapGenerated(true);
     } catch (error) {
       console.error('Heatmap generation error:', error);
     }
   };
 
   const handlePlayExternally = () => {
-    window.open(videoUrl, '_blank'); // open in VLC or new tab (VLC needs to be default handler)
+    window.open(videoUrl, '_blank');
   };
 
   const handleReset = () => {
     setStep('upload');
     setVideoUrl('');
     setDownloadUrl('');
-    setHealthyCount(0);
-    setUnhealthyCount(0);
-    setHotspotCount(0);
     setHeatmapImg('');
     setProgress(0);
     setCompletedSteps([]);
+    setShowButtons(false);
+    setHeatmapGenerated(false);
   };
 
   if (step === 'processing') {
-    return <VideoProcessingScreen progress={progress} completedSteps={completedSteps} />;
-  }
-
-  if (step === 'result') {
     return (
-      <VideoProcessingResult
+      <VideoProcessingScreen
+        progress={progress}
+        completedSteps={completedSteps}
+        showButtons={showButtons}
         videoUrl={videoUrl}
         downloadUrl={downloadUrl}
-        healthyCount={healthyCount}
-        unhealthyCount={unhealthyCount}
-        hotspotCount={hotspotCount}
         heatmapImg={heatmapImg}
+        heatmapGenerated={heatmapGenerated}
         onGenerateHeatmap={handleGenerateHeatmap}
         onPlayExternally={handlePlayExternally}
         onReset={handleReset}
