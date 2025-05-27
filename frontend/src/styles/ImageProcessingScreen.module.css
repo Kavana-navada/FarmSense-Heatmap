@@ -1,23 +1,30 @@
-.container {
-  text-align: center;
+.resultContainer {
   padding: 60px 20px;
-  background-color: #eef4ff;
-  border-radius: 12px;
-  max-width: 600px;
-  margin: 50px auto;
-  min-height: 75vh;
-}
 
+  background-color: #1b1b1b; /* Page background */
+  min-height: 75vh;
+ 
+}
+.container {
+  background-color: #111010; /* Dark Hero Background */
+   text-align: center;
+  padding: 50px 20px;
+  border-radius: 12px;
+  max-width: 700px;
+  margin: 40px auto;
+  min-height: 60vh;
+  color: #FAF3ED;
+  box-shadow: 0px 2px 4px rgba(248, 238, 230, 0.5);
+}
 .spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #d3e3fd;
-  border-top: 4px solid #007bff;
+  border: 4px solid #333;
+  border-top: 4px solid #E52A2A; /* Accent Red */
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 20px auto;
 }
-
 
 @keyframes spin {
   to {
@@ -25,57 +32,73 @@
   }
 }
 
+.progressBarWrapper {
+ margin: 20px auto;
+  max-width: 400px;
+}
+
 .progressBar {
   width: 100%;
-  background-color: #e0e0e0;
-  height: 8px;
-  border-radius: 4px;
-  margin: 20px 0;
+  background-color: #2a2a2a;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .progress {
-  width: 30%;
   height: 100%;
-  background-color: #007bff;
-  border-radius: 4px;
+  background-color: #E52A2A; /* Accent Red */
+    transition: width 0.5s ease;
+
+}
+
+.progressText {
+ margin-top: 5px;
+  font-weight: bold;
+  color: #E52A2A;
+
 }
 
 .steps {
   list-style: none;
   padding: 0;
   text-align: left;
-  max-width: 300px;
+  max-width: 350px;
   margin: 20px auto;
-  font-size: 0.95rem;
-  color: #555;
+  color: #FAF3ED; /* Light Text */
 }
 
 .steps li {
   margin: 10px 0;
-  padding-left: 20px;
+  padding-left: 24px;
   position: relative;
+    font-size: 0.95rem;
+
 }
 
-.steps li::before {
+/* .steps li::before {
   content: '';
   width: 12px;
   height: 12px;
-  border: 2px solid #ccc;
+  border: 2px solid #888;
   border-radius: 50%;
   position: absolute;
   left: 0;
   top: 4px;
-  background-color: white;
+  background-color: #111010;
 }
 
 .active::before {
-  border-color: #007bff;
-  background-color: #007bff;
+  border-color: #E52A2A; 
+  background-color: #E52A2A;
 }
+
+.pending {
+  opacity: 0.6;
+} */
 
 .processingMsg {
   margin-top: 20px;
-  color: #007bff;
+  color: #898888;
   font-weight: 500;
 }
-

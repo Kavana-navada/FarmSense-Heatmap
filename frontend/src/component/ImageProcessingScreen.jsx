@@ -12,6 +12,7 @@ const ImageProcessingScreen = ({ progress, completedSteps }) => {
   ];
 
   return (
+    <section className={styles.resultContainer}>
     <div className={styles.container}>
       <h2>Analyzing Image</h2>
       <p>This may take a few seconds depending on the image size</p>
@@ -37,7 +38,7 @@ const ImageProcessingScreen = ({ progress, completedSteps }) => {
             }
           >
             
-            {index+1}{" "}{step} {" "}{completedSteps.includes(step) ? (
+            {index+1}{"."}{" "}{step} {" "}{completedSteps.includes(step) ? (
               <FaCheck size={15} color="#007bff" />
             ) : (
               `${" "}`
@@ -50,6 +51,7 @@ const ImageProcessingScreen = ({ progress, completedSteps }) => {
         Running detection model and preparing output image...
       </p>
     </div>
+    </section>
   );
 };
 

@@ -52,19 +52,19 @@ const VideoProcessingScreen = ({
               completedSteps.includes(step) ? styles.active : styles.pending
             }
           >
-            {index + 1} {step}{" "}
+            {index + 1}{"."}{" "} {step}{"  "}{" "}
             {completedSteps.includes(step) && (
-              <FaCheck size={15} color="#28a745" />
+              <FaCheck size={15} color="#007bff" />
             )}
-          </li>
+          </li> 
         ))}
       </ul>
 
       {(progress !== 100) ? (
         <p className={styles.processingMsg}>
           Analyzing video frames and extracting chicken health and activity
-          data...<br />
-          <span  className={styles.processingMsg}>Please Wait</span>
+          data.<br />
+          <span  className={styles.processingMsg}>Please Wait...</span>
           
         </p>
         

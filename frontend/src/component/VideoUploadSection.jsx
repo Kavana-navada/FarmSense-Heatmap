@@ -76,7 +76,7 @@ const VideoUploadSection = ({onSubmit}) => {
               Browse Files
               <input type="file" accept="video/*" onChange={handleFileChange} hidden />
             </label>
-            <p className={styles.note}>Maximum file size: 100MB</p>
+            
           </>
         ) : (
           <div className={styles.fileBox}>

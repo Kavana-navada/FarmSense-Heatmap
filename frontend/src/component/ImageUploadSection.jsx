@@ -59,7 +59,7 @@ const ImageUploadSection = ({ onSubmit }) => {
       </p>
 
       <div
-        className={`${styles.uploadCard} ${dragOver ? styles.dragActive : ''}`}
+        className={`${styles.uploadCard} ${dragOver ? styles.dragActive : ''}`} style={{background: "#111010"}}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
@@ -75,7 +75,7 @@ const ImageUploadSection = ({ onSubmit }) => {
             {/* <p className={styles.note}>Maximum file size: 5MB</p> */}
           </>
         ) : (
-          <div className={styles.fileBox}>
+          <div className={styles.fileBox} >
             <div className={styles.selectedFile}>
               <p>Selected File</p>
               <FaTimesCircle
@@ -85,7 +85,7 @@ const ImageUploadSection = ({ onSubmit }) => {
                 title="Remove File"
               />
             </div>
-            <div className={styles.fileInfo} style={{ background: "#f8faff" }}>
+            <div className={styles.fileInfo} style={{boxShadow:"0 2px 6px rgba(27, 27, 27, 1)" }}>
               <FaImage size={28} color="#28a745" />
               <div>
                 <p className={styles.fileName}>{imageFile.name}</p>

@@ -12,8 +12,12 @@ import matplotlib.pyplot as plt
 import uuid
 from PIL import Image, ImageDraw, ImageFont
 from collections import Counter
-
+from sklearn.cluster import DBSCAN
 import mimetypes
+from sort_tracker import Sort 
+import json
+
+
 
 
 app = Flask(__name__)
@@ -23,10 +27,6 @@ UPLOAD_FOLDER = 'uploads'
 OUTPUT_FOLDER = 'outputs'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
-
-# UPLOAD_FOLDER = 'uploads'
-# os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 model = YOLO('best.pt')
 
@@ -82,8 +82,6 @@ def serve_output_file(filename):
         return "File not found", 404
     mime_type, _ = mimetypes.guess_type(filepath)
     return send_file(filepath, mimetype=mime_type)
-
-
 @app.route('/analyze-video', methods=['POST'])
 def analyze_video():
     video_file = request.files['video']
@@ -99,20 +97,21 @@ def analyze_video():
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
-    # fallback fps
+    with open(os.path.join(OUTPUT_FOLDER, "video_meta.json"), "w") as f:
+        json.dump({"width": width, "height": height}, f)
+
     if fps == 0 or np.isnan(fps):
         fps = 25.0
 
-    # safer codec and file extension
-    fourcc = cv2.VideoWriter_fourcc('X','V','I','D')
+    fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
     out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
 
-    # Optional debug
     print(f"Saving annotated video: {output_path}")
     print(f"Resolution: {width}x{height}, FPS: {fps}")
 
-    healthy_count, unhealthy_count = 0, 0
-    chicken_positions = []
+    tracker = Sort()
+    track_positions = {}  # {id: [(x, y), ...]}
+    track_health = {}     # {id: 'Healthy' / 'Unhealthy'}
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -120,51 +119,105 @@ def analyze_video():
             break
 
         results = model(frame)[0]
-        for box in results.boxes:
-            x1, y1, x2, y2 = map(int, box.xyxy[0])
-            cx = int((x1 + x2) / 2)
-            cy = int((y1 + y2) / 2)
-            chicken_positions.append((cx, cy))
+        detections = []
+        health_labels = []
 
+        for box in results.boxes:
+            x1, y1, x2, y2 = map(float, box.xyxy[0])
             conf = float(box.conf[0])
             cls = int(box.cls[0])
             label = 'Healthy' if cls == 0 else 'Unhealthy'
+            detections.append([x1, y1, x2, y2, conf])
+            health_labels.append(label)
 
-            if cls == 0:
-                healthy_count += 1
-                color = (0, 255, 0)
-            else:
-                unhealthy_count += 1
-                color = (255, 0, 0 )
+        if len(detections) > 0:
+            trackers = tracker.update(np.array(detections))
+            for i, (x1, y1, x2, y2, track_id) in enumerate(trackers):
+                cx = int((x1 + x2) / 2)
+                cy = int((y1 + y2) / 2)
+                track_id = int(track_id)
 
-            cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
-            cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                # Store positions
+                if track_id not in track_positions:
+                    track_positions[track_id] = []
+                track_positions[track_id].append((cx, cy))
+
+                # Use nearest health label for ID
+                if track_id not in track_health and i < len(health_labels):
+                    track_health[track_id] = health_labels[i]
+
+                label = track_health.get(track_id, "Chicken")
+                color = (255, 0, 0) if label == 'Healthy' else (173, 216, 230)
+
+                # Draw the bounding box
+                cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), color, 1)
+
+                # Calculate text size
+                (text_width, text_height), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
+                text_offset_x = int(x1)
+                text_offset_y = int(y1) - 10
+
+                # Draw filled rectangle as background for text
+                cv2.rectangle(frame,
+                            (text_offset_x, text_offset_y - text_height - 4),
+                            (text_offset_x + text_width, text_offset_y),
+                            color,
+                            thickness=cv2.FILLED)
+
+                # Draw the label text in white
+                cv2.putText(frame, label,
+                            (text_offset_x, text_offset_y - 2),
+                            cv2.FONT_HERSHEY_SIMPLEX,
+                            0.5,
+                            (255, 255, 255),
+                            thickness=1)
+
 
         out.write(frame)
 
     cap.release()
     out.release()
 
-    # Save for heatmap use
-    np.save(os.path.join(OUTPUT_FOLDER, "chicken_positions.npy"), chicken_positions)
+    # Save tracked chickens as (id, x, y)
+    tracked_positions = []
+    for track_id, coords in track_positions.items():
+        for x, y in coords:
+            tracked_positions.append((track_id, x, y))
+
+    np.save(os.path.join(OUTPUT_FOLDER, "tracked_chickens.npy"), tracked_positions)
 
     return jsonify({
-        
         'annotated_video': output_filename
     })
-
 
 @app.route('/generate-heatmap', methods=['GET'])
 def generate_heatmap():
     try:
-        positions = np.load(os.path.join(OUTPUT_FOLDER, "chicken_positions.npy"))
-        if len(positions) == 0:
-            raise ValueError("No chicken positions available.")
+        tracked = np.load(os.path.join(OUTPUT_FOLDER, "tracked_chickens.npy"), allow_pickle=True)
+        if len(tracked) == 0:
+            raise ValueError("No tracked chicken positions available.")
 
-        heatmap = np.zeros((720, 1280), dtype=np.float32)
-        for x, y in positions:
-            if 0 <= x < 1280 and 0 <= y < 720:
-                heatmap[int(y), int(x)] += 1
+        # Load resolution
+        with open(os.path.join(OUTPUT_FOLDER, "video_meta.json")) as f:
+            meta = json.load(f)
+        width = meta["width"]
+        height = meta["height"]
+
+
+        heatmap = np.zeros((int(height), int(width)), dtype=np.float32)
+
+        # Grid to store unique IDs at each position
+        grid = [[set() for _ in range(int(width))] for _ in range(int(height))]
+
+        for tid, x, y in tracked:
+            x = int(x)
+            y = int(y)
+            if 0 <= x < int(width) and 0 <= y < int(height):
+                grid[y][x].add(tid)
+
+        for y in range(int(height)):
+            for x in range(int(width)):
+                heatmap[y, x] = len(grid[y][x])
 
         heatmap_blurred = gaussian_filter(heatmap, sigma=25)
         normalized = cv2.normalize(heatmap_blurred, None, 0, 255, cv2.NORM_MINMAX)
@@ -177,62 +230,32 @@ def generate_heatmap():
         return jsonify({'heatmap_path': f"{OUTPUT_FOLDER}/{heatmap_filename}"})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
 
 
-# @app.route('/upload-image', methods=['POST'])
-# def upload_image():
-#     if 'image' not in request.files:
-#         return jsonify({'error': 'No image file in request'}), 400
+# @app.route('/generate-heatmap', methods=['GET'])
+# def generate_heatmap():
+#     try:
+#         positions = np.load(os.path.join(OUTPUT_FOLDER, "chicken_positions.npy"))
+#         if len(positions) == 0:
+#             raise ValueError("No chicken positions available.")
 
-#     image_file = request.files['image']
-#     if image_file.filename == '':
-#         return jsonify({'error': 'No selected image file'}), 400
+#         heatmap = np.zeros((720, 1280), dtype=np.float32)
+#         for x, y in positions:
+#             if 0 <= x < 1280 and 0 <= y < 720:
+#                 heatmap[int(y), int(x)] += 1
 
-#     filename = secure_filename(image_file.filename)
-#     image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-#     image_file.save(image_path)
+#         heatmap_blurred = gaussian_filter(heatmap, sigma=25)
+#         normalized = cv2.normalize(heatmap_blurred, None, 0, 255, cv2.NORM_MINMAX)
+#         heatmap_colored = cv2.applyColorMap(normalized.astype(np.uint8), cv2.COLORMAP_JET)
 
-#     # Load the image using OpenCV
-#     img = cv2.imread(image_path)
+#         heatmap_filename = f"{uuid.uuid4().hex}_heatmap.jpg"
+#         heatmap_path = os.path.join(OUTPUT_FOLDER, heatmap_filename)
+#         cv2.imwrite(heatmap_path, heatmap_colored)
 
-#     # Run YOLO on the image
-#     results = model(img)
-#     for r in results:
-#         for box in r.boxes:
-#             x1, y1, x2, y2 = map(int, box.xyxy[0])
-#             conf = box.conf[0].item()
-#             label = box.cls[0].item()
-            
-#             # Use your own class labels here
-#             status = "Healthy" if label == 0 else "Unhealthy"
-#             color = (0, 255, 0) if label == 0 else (0, 0, 255)
-
-#             cv2.rectangle(img, (x1, y1), (x2, y2), color, 2)
-#             cv2.putText(img, f'{status} ({conf:.2f})', (x1, y1 - 10),
-#                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
-
-#     # Save the processed image
-#     output_path = os.path.join(app.config['UPLOAD_FOLDER'], 'output_' + filename)
-#     cv2.imwrite(output_path, img)
-
-#     # Return the image file
-#     return send_file(output_path, mimetype='image/jpeg')
-
-# @app.route('/upload', methods=['POST'])
-# def upload_video():
-#     if 'video' not in request.files:
-#         return jsonify({'error': 'No video part in request'}), 400
-
-#     file = request.files['video']
-#     if file.filename == '':
-#         return jsonify({'error': 'No selected file'}), 400
-
-#     filename = secure_filename(file.filename)
-#     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-#     file.save(filepath)
-
-#     # For now, just return the saved path
-#     return jsonify({'message': 'Video uploaded successfully!', 'path': filepath}), 200
+#         return jsonify({'heatmap_path': f"{OUTPUT_FOLDER}/{heatmap_filename}"})
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 500
 
 
 if __name__ == '__main__':

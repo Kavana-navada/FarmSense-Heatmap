@@ -15,9 +15,6 @@ const HomePage = () => {
       imageUploadSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
-//   const goToImageUpload = () => {
-//   navigate('/upload-image');
-// };
 
   const scrollToVideoUpload = () => {
     const videoUploadSection = document.getElementById('video-upload-section');

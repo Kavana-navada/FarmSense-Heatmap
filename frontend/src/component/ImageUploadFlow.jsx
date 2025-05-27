@@ -1,5 +1,5 @@
 // ImageUploadFlow.js (State Handler)
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ImageUploadSection from './ImageUploadSection';
 import ImageProcessingScreen from './ImageProcessingScreen';
 import ImageAnalysisResult from './ImageProcessingResult';
@@ -30,7 +30,7 @@ const ImageUploadFlow = () => {
   let s = -1;
   const steps = ['Reading Image', 'Detecting Chickens', 'Classifying Health', 'Annotating Output'];
   const interval = setInterval(() => {
-    if (p >= 100) {
+    if (p >= 99) {
       clearInterval(interval);
     } else {
       p += 25;

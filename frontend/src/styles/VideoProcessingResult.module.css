@@ -1,9 +1,9 @@
-/* VideoProcessingResult.module.css */
+/* VideoProcessingResult.module.css
 
 .resultContainer {
   padding: 60px 20px;
   text-align: center;
-  background-color: #ffffff;
+  background-color: red;
   min-height: 75vh;
 }
 
@@ -121,4 +121,4 @@
   .fullVideo {
     width: 100%;
   }
-}
+} */

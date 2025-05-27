@@ -1,73 +1,70 @@
 .uploadSection {
   padding: 60px 20px;
   text-align: center;
-  background-color: #f8faff;
+  background-color: #111010;
+
   min-height: 75vh;
 }
-.ImguploadSection{
-     padding: 60px 20px;
-    text-align: center;
-    background-color: #eef4ff;
-    height: 80vh;
-}
+.ImguploadSection {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #1b1b1b;
 
-.uploadSection h2, .ImguploadSection h2 {
+  min-height: 75vh;
+}
+.uploadSection h2 , .ImguploadSection h2 {
   font-size: 2rem;
-  color: #1c1e21;
+  color: #E52A2A; /* Accent Red */
   margin-bottom: 10px;
 }
 
-
 .subtitle {
   font-size: 1rem;
-  color: #5e6a78;
+  color: #FAF3ED; /* Light Cream */
   margin-bottom: 30px;
 }
 
 .uploadCard {
-  border: 2px dashed #cfd8e3;
+  border: 2px dashed #E52A2A;
   border-radius: 16px;
   padding: 40px;
   max-width: 600px;
   margin: 60px auto;
-  background-color: #ffffff;
-  /* margin-top: 70px; */
-}
+  background-color: #1C1C1C;
 
-.uploadIcon {
-  margin-bottom: 16px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 6px rgba(229, 42, 42, 0.5);
+
 }
 
 .uploadCard h3 {
   font-size: 1.25rem;
   margin: 10px 0;
-  color: #222;
+  color: #FAF3ED;
 }
 
 .uploadCard p {
   font-size: 0.95rem;
-  color: #555;
+  color: #FAF3ED;
 }
 
 .uploadButton {
   margin-top: 16px;
   display: inline-block;
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: #E52A2A;
+  color: #FAF3ED;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
+  transition: background-color 0.3s ease;
+  border: 2px solid transparent;
 }
 
 .uploadButton:hover {
-  background-color: #005fd3;
-}
-
-.videoName {
-  margin-top: 10px;
-  font-weight: 500;
-  color: #007bff;
+  background-color: white;
+  border: 2px solid #E52A2A;
+  color: #E52A2A;
 }
 
 .note {
@@ -75,14 +72,14 @@
   color: #888;
   margin-top: 10px;
 }
+
 .dragActive {
-  border-color: #007bff;
-  background-color: #f0f8ff;
+  border-color: #E52A2A;
+  background-color: #2a2a2a;
 }
 
 .fileBox {
   text-align: center;
-  
 }
 
 .fileInfo {
@@ -90,64 +87,68 @@
   align-items: center;
   gap: 12px;
   margin: 5px auto;
-  background: #e6eef9;
+  background: #222222;
+  
   padding: 10px 15px;
   border-radius: 10px;
   width: 95%;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  
 }
-.selectedFile{
-     display: flex;
-     justify-content: space-between;
-     font-weight: bold;
-      align-items: center;
+
+.selectedFile {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  align-items: center;
+  color: #FAF3ED;
 }
 
 .fileName {
   font-weight: 600;
-  color: #222;
-  
+  color: #FAF3ED;
   margin-bottom: 0px;
 }
 
 .fileSize {
   font-size: 0.85rem;
-  color: #666;
- margin-top: 2px;
+  color: #FAF3ED;
+  margin-top: 2px;
   text-align: left;
 }
 
 .removeIcon {
   margin-top: 10px;
-  color: #999;
+  color: #FAF3ED;
   cursor: pointer;
 }
 
 .generateButton {
   margin-top: 20px;
   padding: 12px 24px;
-  background-color: #007bff;
-  color: white;
+  background-color: #E52A2A;
+  color: #FAF3ED;
   font-weight: 600;
-  border: none;
+  border: 2px solid transparent;
   border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .generateButton:hover {
-  background-color: #005fd3;
+  background-color: white;
+  border: 2px solid #E52A2A;
+  color: #E52A2A;
 }
 
-
 @media (max-width: 600px) {
-    .uploadSection h2{
-         font-size: 1.8rem;
-    }
-    .fileInfo {
-        width: 88%;
-        
-    }
+  .uploadSection h2 {
+    font-size: 1.8rem;
+  }
+
+  .fileInfo {
+    width: 88%;
+  }
 
   .uploadCard {
     padding: 30px 20px;
