@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styles from '../styles/ImgVideoUploadSection.module.css';
 import { FaPlayCircle, FaTimesCircle, FaCloudUploadAlt } from 'react-icons/fa';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const VideoUploadSection = ({onSubmit}) => {
   const [videoFile, setVideoFile] = useState(null);
@@ -11,7 +13,7 @@ const VideoUploadSection = ({onSubmit}) => {
     if (isValidVideo(file)) {
       setVideoFile(file);
     } else {
-      alert('Please upload a valid video file (MP4, MOV, AVI, WEBM).');
+      toast.error('Please upload a valid video file (MP4, MOV, AVI, WEBM).');
     }
   };
 
@@ -27,7 +29,7 @@ const VideoUploadSection = ({onSubmit}) => {
     if (isValidVideo(file)) {
       setVideoFile(file);
     } else {
-      alert('Only video files are allowed.');
+      toast.error('Only video files are allowed.');
     }
   };
 
@@ -56,6 +58,7 @@ const VideoUploadSection = ({onSubmit}) => {
   } 
 
   return (
+    <>
     <section className={styles.uploadSection}>
       <h2>Upload Poultry Farm Video</h2>
       <p className={styles.subtitle}>
@@ -103,6 +106,8 @@ const VideoUploadSection = ({onSubmit}) => {
         )}
       </div>
     </section>
+    
+    </>
   );
 };
 

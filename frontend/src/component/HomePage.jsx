@@ -1,14 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from "../styles/HomePage.module.css";
-import ImageUploadSection from './ImageUploadSection';
-import VideoUploadSection from './VideoUploadSection';
 import ImageUploadFlow from './ImageUploadFlow';
 import {FaAngleDown} from 'react-icons/fa';
 import VideoUploadFlow from './VideoUploadFlow';
 
 const HomePage = () => {
-  const navigate = useNavigate();
   const scrollToImageUpload = () => {
     const imageUploadSection = document.getElementById('image-upload-section');
     if (imageUploadSection) {
@@ -25,8 +21,11 @@ const HomePage = () => {
   return (
     <>
     <header className={styles.heroContainer}>
+      <img src="/bghenleft.png" alt="Hen Left" className={styles.henLeft} />
       <nav className={styles.navbar}>
-        <div className={styles.logo}>🐔 FarmSense</div>
+        <div className={styles.logoWrapper}>
+        <div className={styles.logoText}>🐔 FarmSense</div>
+        </div>
       </nav>
 
       <div className={styles.heroContent}>
@@ -46,6 +45,7 @@ const HomePage = () => {
         <p className={styles.scroll}>Scroll to begin <br /><button onClick={scrollToVideoUpload} className={styles.downArrow}><FaAngleDown size={20}/></button></p>
         
       </div>
+       <img src="/bghen.png" alt="Hen Right" className={styles.henRight} />
     </header>
     <div id="video-upload-section">
     <VideoUploadFlow/>

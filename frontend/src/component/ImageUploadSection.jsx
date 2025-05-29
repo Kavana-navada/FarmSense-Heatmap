@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import styles from '../styles/ImgVideoUploadSection.module.css';
 import { FaImage, FaTimesCircle, FaCloudUploadAlt } from 'react-icons/fa';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ImageUploadSection = ({ onSubmit }) => {
   const [imageFile, setImageFile] = useState(null);
@@ -10,9 +12,12 @@ const ImageUploadSection = ({ onSubmit }) => {
   const handleFileChange = (e) => {
   const file = e.target.files[0];
   if (isValidImage(file)) {
+
     setImageFile(file);
+    
   } else {
-    alert('Please upload a valid image file (JPG, PNG, etc).');
+      toast.error('Please upload a valid image file only (JPG, PNG, etc).');
+
   }
 };
 
@@ -28,8 +33,10 @@ const ImageUploadSection = ({ onSubmit }) => {
   const file = e.dataTransfer.files[0];
   if (isValidImage(file)) {
     setImageFile(file);
+   
   } else {
-    alert('Only image files are allowed.');
+
+      toast.error('Only image files are allowed.');
   }
 };
 
@@ -52,6 +59,7 @@ const ImageUploadSection = ({ onSubmit }) => {
 
 
   return (
+    <>
     <section className={styles.ImguploadSection}>
       <h2>Upload Chicken Image</h2>
       <p className={styles.subtitle}>
@@ -96,10 +104,15 @@ const ImageUploadSection = ({ onSubmit }) => {
             <button className={styles.generateButton} onClick={handleAnalyze} disabled={!isValidImage(imageFile)}>
               Analyze Image
             </button>
+            <ToastContainer position="top-center" autoClose={3000} />
           </div>
+          
         )}
       </div>
     </section>
+ 
+    
+    </>
   );
 };
 

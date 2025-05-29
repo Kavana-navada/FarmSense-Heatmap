@@ -9,9 +9,12 @@ import ImageUploadFlow from './component/ImageUploadFlow';
 import VideoUploadFlow from './component/VideoUploadFlow';
 import VideoProcessingScreen from './component/VideoProcessingScreen';
 import VideoProcessingResult from './component/VideoProcessingResult';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
+    <>
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -26,6 +29,8 @@ function App() {
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
+    <ToastContainer position="top-center" autoClose={3000} />
+    </>
   );
 }
 
