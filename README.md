@@ -79,6 +79,74 @@ Manual monitoring in poultry farms is time-consuming and error-prone. Farmers st
 - **Platform**: Google Colab, local Flask-React deployment
 
 ---
+## 🚀 Getting Started
+
+Follow these instructions to set up the project locally and run it on your machine.
+
+### 🔧 Prerequisites
+
+Make sure you have the following installed:
+
+- Python 3.10+
+- Flask
+- pip (Python package manager)
+- Git
+- Node.js & npm (for frontend)
+- [YOLOv8 Requirements](https://docs.ultralytics.com/) (Ultralytics library)
+- Google Chrome or any modern browser
+
+---
+### 📥 Clone the Repository
+
+```bash
+git clone https://github.com/Kavana-navada/FarmSense-Heatmap.git
+cd Heatmap-AI-FarmSense
+```
+🧠 Backend Setup (Flask API)
+Navigate to the backend folder:
+
+```bash
+cd backend
+```
+Create a virtual environment and activate it:
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+Run the Flask server:
+
+```bash
+python app.py
+```
+The API will run on http://127.0.0.1:5000/
+
+🌐 Frontend Setup (React Interface)
+Navigate to the frontend folder:
+
+```bash
+cd ../frontend
+```
+Install React dependencies:
+```bash
+npm install
+```
+Run the frontend development server:
+```bash
+npm start
+```
+The interface will open at http://localhost:3000/
+
+---
+##✅ Running the System
+Upload an image or video via the frontend.
+
+The system will detect chickens, classify health, track movement, and generate a heatmap.
+
+You can download the annotated video or image and also view the heatmap overlay.
+
+---
+
 ## 📌 Future Work
 
 - Real-time integration with CCTV streams  
