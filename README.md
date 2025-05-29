@@ -57,26 +57,13 @@ Manual monitoring in poultry farms is time-consuming and error-prone. Farmers st
 
 ---
 
-## 📊 Results
-
-| Feature | Status |
-|--------|--------|
-| 🖼️ Image detection | ✅ |
-| 🎥 Video tracking | ✅ |
-| 🚦 Health classification | ✅ |
-| 🗺️ Heatmap generation | ✅ |
-| 💾 Output download | ✅ |
-
-> Sample outputs include detection overlays and interactive heatmaps for poultry distribution analysis.
-
----
-
 ## 🖥️ Tech Stack
 
-- **Frameworks**: YOLOv8, SORT
-- **Language**: Python
-- **Libraries**: OpenCV, NumPy, Matplotlib, Seaborn, Flask (backend), React (frontend)
-- **Platform**: Google Colab, local Flask-React deployment
+- **Frontend:** React.js  
+- **Backend:** Flask (Python), Flask-CORS  
+- **Model:** YOLOv8 (Ultralytics)  
+- **Tracking:** SORT (Simple Online and Realtime Tracking)  
+- **Libraries:** OpenCV, NumPy, Matplotlib, PIL, Scipy 
 
 ---
 ## 🚀 Getting Started
@@ -138,12 +125,24 @@ npm start
 The interface will open at http://localhost:3000/
 
 ---
-##✅ Running the System
+## ✅ Running the System
+
 Upload an image or video via the frontend.
 
 The system will detect chickens, classify health, track movement, and generate a heatmap.
 
 You can download the annotated video or image and also view the heatmap overlay.
+
+---
+## 📊 Results
+
+| Feature | Status |
+|--------|--------|
+| 🖼️ Image detection | ✅ |
+| 🎥 Video tracking | ✅ |
+| 🚦 Health classification | ✅ |
+| 🗺️ Heatmap generation | ✅ |
+| 💾 Output download | ✅ |
 
 ---
 
