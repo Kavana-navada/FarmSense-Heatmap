@@ -79,5 +79,14 @@ Manual monitoring in poultry farms is time-consuming and error-prone. Farmers st
 - **Platform**: Google Colab, local Flask-React deployment
 
 ---
+## 📌 Future Work
 
+- Real-time integration with CCTV streams  
+- Disease-specific detection models  
+- Web-based live dashboard for farms  
+
+---
+## 📜 License
+
+This project is for academic and research purposes only.
 
