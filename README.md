@@ -145,6 +145,10 @@ You can download the annotated video or image and also view the heatmap overlay.
 | 💾 Output download | ✅ |
 
 ---
+## 📷 Screenshots  
+
+### 🔑 HomeScreen   
+<img src="screenshots/home.png" alt="Login Page" width="600"/>
 
 ## 📌 Future Work
 
