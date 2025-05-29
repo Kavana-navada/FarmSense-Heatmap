@@ -147,9 +147,31 @@ You can download the annotated video or image and also view the heatmap overlay.
 ---
 ## 📷 Screenshots  
 
-### 🔑 HomeScreen   
+### HomeScreen   
 <img src="screenshots/home.png" alt="Login Page" width="600"/>
 
+### Image Upload Interface 
+<img src="screenshots/ImageUpload.png" alt="Image upload" width="600"/>
+
+### Video Upload Interface   
+<img src="screenshots/VideoUpload.png" alt="Video upload" width="600"/>
+
+### Image Analysis Result   
+<img src="screenshots/ImageResult.png" alt="Image result" width="600"/>
+
+### Video Processing screen   
+<img src="screenshots/ProcessingScreen.png" alt="Processing screen" width="600"/>
+
+### Video Analysis Result of Healthy Chicken   
+<img src="screenshots/HealthyVideo.png" alt="video result" width="600"/>
+
+### Video Analysis Result of Unhealthy Chicken     
+<img src="screenshots/UnhealthyVideo.png" alt="video result" width="600"/>
+
+### Heatmap Visualization   
+<img src="screenshots/heatmap.jpg" alt="heatmap" width="600"/>
+
+---
 ## 📌 Future Work
 
 - Real-time integration with CCTV streams  
